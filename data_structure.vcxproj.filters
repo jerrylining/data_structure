@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="tree">
+      <UniqueIdentifier>{88ebd83d-3bb8-427d-8c29-73ee1a18889e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tree\.h">
+      <UniqueIdentifier>{28e6a9b1-c021-452d-8c64-7737de570e86}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -24,11 +30,14 @@
     <ClInclude Include="targetver.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="AvlTree.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="tree\AvlTree.h">
+      <Filter>tree\.h</Filter>
     </ClInclude>
-    <ClInclude Include="Comparable.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="tree\BinaryTree.h">
+      <Filter>tree\.h</Filter>
+    </ClInclude>
+    <ClInclude Include="tree\Comparable.h">
+      <Filter>tree\.h</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -38,8 +47,8 @@
     <ClCompile Include="main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="AvlTree.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="tree\AvlTree.cpp">
+      <Filter>tree</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

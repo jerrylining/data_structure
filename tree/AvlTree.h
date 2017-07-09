@@ -2,7 +2,7 @@
 #ifndef __AVL_TREE_H__
 #define __AVL_TREE_H__
 
-#include "stdafx.h"
+#include "../stdafx.h"
 #include <stddef.h>
 #include "Comparable.h"
 
