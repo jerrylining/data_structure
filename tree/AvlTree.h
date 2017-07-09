@@ -106,7 +106,7 @@ private:
 	}
 
 	static Comparable<KeyType>*
-		InsetInternal(AvlNode<KeyType>* item, AvlNode<KeyType> *&root, int &change);
+		InsertInternal(AvlNode<KeyType>* item, AvlNode<KeyType> *&root, int &change);
 
 	static Comparable<KeyType>*
 		DeleteInternal(KeyType key, AvlNode<KeyType>* &root, int &change, CMP_T cmp = EQ_CMP);
