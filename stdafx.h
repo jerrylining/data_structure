@@ -9,7 +9,7 @@
 
 #include <stdio.h>
 #include <tchar.h>
-
+#include <stdlib.h>
 #define USE_DEBUG
 
 // TODO:  在此处引用程序需要的其他头文件
