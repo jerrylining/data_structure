@@ -5,7 +5,46 @@
 #include "../stdafx.h"
 #include <stddef.h>
 #include "Comparable.h"
+/*
+二叉平衡树四种失衡类型
+1.单左旋   在左子树插入左孩子节点 导致平衡因子绝对值由1增加至2
+2.单右旋   在右子树插入右孩子节点 导致平衡因子绝对值由1增加至2
+3.先左旋后右旋    在左子树插入右孩子节点 导致平衡因子绝对值由1增加至2
+4.先右旋后左旋    在右子树插入左孩子节点 导致平衡因子绝对值由1增加至2
 
+LL
+1. R            R                    C
+    \            \                 /  \
+	 C    ==>     C        ==>    R     I
+	               \
+				    I
+
+
+RR
+2.   R             R                 C
+    /    ==>      /       ==>       / \
+   C             C                 I   R
+                /
+			   I
+
+3.
+       R               R                  R                        R  
+	  / \             / \    L Spin      / \      R Spin          / \
+	 LC  RC  ==>     LC  RC   ==>      LC   RC     ==>          I   RC
+	/               /                  /                        /\
+   G               G                  I                        G  LC
+                    \                /
+					 I              G
+
+
+4.     R                  R                     R                      R
+      / \                / \     R Spin        / \       L Spin       / \
+	 LC  RC   ==>       LC  RC    ==>         LC  RC      ==>        LC  I
+	      \                  \                     \                    / \
+		   G                  G                     I                  RC  G
+		                     /                       \
+							I                         G
+*/
 enum DIR_T{
 	LEFT = 0,
 	RIGHT
@@ -47,6 +86,11 @@ public:
 	static Comparable<KeyType>*
 		Delete(KeyType key, AvlNode<KeyType>* &root, CMP_T cmp = EQ_CMP);
 
+	static Comparable<KeyType>*
+		Min(AvlNode<KeyType>* &root);
+
+	static Comparable<KeyType>*
+		Max(AvlNode<KeyType>* &root);
 	//树高度
 	int
 		Height()const;
@@ -80,6 +124,9 @@ private:
 	CMP_T
 		Compare(const KeyType &key, CMP_T cmp = EQ_CMP)const;
 
+	//重新调整平衡
+	int
+		Rebalance(AvlNode<KeyType> *&root);
 private:
 	AvlNode(const AvlNode<KeyType>&);
 	AvlNode & operator=(const AvlNode<KeyType>&);
@@ -125,6 +172,17 @@ public:
 	bool Check()const{
 		return (root_) ? root_->Check() : false;
 	}
+
+	//最小节点
+	Comparable<KeyType>*
+		Min(){
+			return AvlNode<KeyType>::Min(root_);
+		}
+	//最大节点
+	Comparable<KeyType>*
+		Max(){
+			return AvlNode<KeyType>::Max(root_);
+		}
 private:
 	AvlTree(const AvlTree<KeyType>&);
 	AvlTree & operator=(const AvlTree<KeyType>&);

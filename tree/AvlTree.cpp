@@ -93,3 +93,53 @@ AvlNode<KeyType>::Delete(KeyType key, AvlNode<KeyType>* &root, CMP_T cmp)
 	int change = -1;
 	return DeleteInternal(key, root, change, cmp);
 }
+
+template<class KeyType>
+Comparable<KeyType>*
+AvlNode<KeyType>::InsetInternal(AvlNode<KeyType>* item, AvlNode<KeyType> *&root, int &change)
+{
+	if (root == NULL){
+		root = new AvlNode<KeyType>(item);
+		change = HEIGHT_CHANGE;
+		return NULL;
+	}
+
+	Comparable<KeyType> *found = NULL;
+	int increase = 0;
+
+	CMP_T result = root->Compare(item->Key());
+	DIR_T dir = (result == MIN_CMP) ? LEFT : RIGHT;
+	if (result != EQ_CMP){
+		found = InsetInternal(item, root[dir], change);
+		if (found)return found;
+		increase = result *change;
+	}
+	else{
+		increase = HEIGHT_NOCHANGE;
+		return root->Data();
+	}
+
+	root->balance_ += increase;
+
+	change = (increase && root->balance_) ? (1 - Rebalance(root)) : HEIGHT_NOCHANGE;
+
+	return NULL;
+}
+
+template<class KeyType>
+Comparable<KeyType>*
+AvlNode<KeyType>::DeleteInternal(KeyType key, AvlNode<KeyType>* &root, int &change, CMP_T cmp)
+{
+	if (root == NULL){
+		change = HEIGHT_NOCHANGE;
+		return NULL;
+	}
+
+	Comparable<KeyType>* found = NULL;
+	int decrease = 0;
+
+	CMP_T result = root->Compare(key, cmp);
+	DIR_T dir = (result == MIN_CMP) ? LEFT : RIGHT;
+
+	if (result != )
+}
