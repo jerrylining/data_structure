@@ -246,7 +246,7 @@ AvlNode<KeyType>::RotateTwice(AvlNode<KeyType> *&root, DIR_T dir)
 	oldOtherDirSubTree->sub_[dir] = root->sub_[other];
 	root->sub_[other] = oldOtherDirSubTree;
 
-	root->sub_[LEFT]->Balance() = -MAX(root->Balance(), 0);
+	root->sub_[LEFT]->Balance()  = -MAX(root->Balance(), 0);
 	root->sub_[RIGHT]->Balance() = -MIN(root->Balance(), 0);
 
 	return HEIGHT_CHANGE;

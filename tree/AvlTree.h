@@ -27,6 +27,7 @@ RR
                 /
 			   I
 
+RL
 3.
        R               R                  R                        R  
 	  / \             / \    L Spin      / \      R Spin          / \
@@ -36,7 +37,7 @@ RR
                     \                /
 					 I              G
 
-
+LR
 4.     R                  R                     R                      R
       / \                / \     R Spin        / \       L Spin       / \
 	 LC  RC   ==>       LC  RC    ==>         LC  RC      ==>        LC  I
