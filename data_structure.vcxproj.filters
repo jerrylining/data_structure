@@ -39,6 +39,15 @@
     <ClInclude Include="tree\Comparable.h">
       <Filter>tree\.h</Filter>
     </ClInclude>
+    <ClInclude Include="tree\B+Tree.h">
+      <Filter>tree\.h</Filter>
+    </ClInclude>
+    <ClInclude Include="tree\BTree.h">
+      <Filter>tree\.h</Filter>
+    </ClInclude>
+    <ClInclude Include="tree\RBTree.h">
+      <Filter>tree\.h</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -48,6 +57,15 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="tree\AvlTree.cpp">
+      <Filter>tree</Filter>
+    </ClCompile>
+    <ClCompile Include="tree\B+Tree.cpp">
+      <Filter>tree</Filter>
+    </ClCompile>
+    <ClCompile Include="tree\BTree.cpp">
+      <Filter>tree</Filter>
+    </ClCompile>
+    <ClCompile Include="tree\RBTree.cpp">
       <Filter>tree</Filter>
     </ClCompile>
   </ItemGroup>

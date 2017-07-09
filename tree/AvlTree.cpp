@@ -239,7 +239,7 @@ AvlNode<KeyType>::RotateTwice(AvlNode<KeyType> *&root, DIR_T dir)
 
 	//第一次旋转
 	root = oldRoot->sub_[other]->sub_[dir];
-	oldRoot->sub_[other] = root->sub_[dir];
+	oldRoot->sub_[other] = root->sub_[dir]; //
 	root->sub_[dir] = oldRoot;
 
 	//第二次旋转
