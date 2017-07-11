@@ -45,7 +45,7 @@
     <ClInclude Include="tree\Comparable.h">
       <Filter>tree\.h</Filter>
     </ClInclude>
-    <ClInclude Include="SHash.h">
+    <ClInclude Include="hash\SHash.h">
       <Filter>hash\.h</Filter>
     </ClInclude>
   </ItemGroup>
@@ -59,7 +59,7 @@
     <ClCompile Include="tree\AvlTree.cpp">
       <Filter>tree</Filter>
     </ClCompile>
-    <ClCompile Include="SHash.cpp">
+    <ClCompile Include="hash\SHash.cpp">
       <Filter>hash</Filter>
     </ClCompile>
   </ItemGroup>

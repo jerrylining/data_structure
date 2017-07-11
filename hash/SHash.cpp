@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "../stdafx.h"
 #include "SHash.h"
 
 template<class KeyType,class ValueType>
