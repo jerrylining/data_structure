@@ -19,6 +19,12 @@
     <Filter Include="tree\.h">
       <UniqueIdentifier>{28e6a9b1-c021-452d-8c64-7737de570e86}</UniqueIdentifier>
     </Filter>
+    <Filter Include="hash">
+      <UniqueIdentifier>{678cce91-1466-485b-a623-d7131e6b1a03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="hash\.h">
+      <UniqueIdentifier>{032bfb0f-e824-4440-b780-8d8e558c9cc2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -39,6 +45,9 @@
     <ClInclude Include="tree\Comparable.h">
       <Filter>tree\.h</Filter>
     </ClInclude>
+    <ClInclude Include="SHash.h">
+      <Filter>hash\.h</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -49,6 +58,9 @@
     </ClCompile>
     <ClCompile Include="tree\AvlTree.cpp">
       <Filter>tree</Filter>
+    </ClCompile>
+    <ClCompile Include="SHash.cpp">
+      <Filter>hash</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
