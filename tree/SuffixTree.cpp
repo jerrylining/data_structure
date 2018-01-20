@@ -1,3 +1,3 @@
 #include "../stdafx.h"
+#include "SuffixTree.h"
 
-#include "RBTree.h"

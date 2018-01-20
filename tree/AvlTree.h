@@ -4,7 +4,7 @@
 
 #include "../stdafx.h"
 #include <stddef.h>
-#include "Comparable.h"
+#include <iostream>
 /**
 二叉平衡树四种失衡类型
 1.单左旋   在左子树插入左孩子节点 导致平衡因子绝对值由1增加至2
@@ -46,149 +46,383 @@ LR
 		                     /                       \
 							I                         G
 */
-enum DIR_T{
-	LEFT = 0,
-	RIGHT
+
+#define MAX(a,b)  (((a) > (b)) ? (a) : (b))
+#define MIN(a,b)  (((a) < (b)) ? (a) : (b))
+
+template<typename T>
+struct AVLTreeNode {
+	AVLTreeNode(T value, AVLTreeNode<T> *l, AVLTreeNode<T> *r)
+		:key(value), left(l), right(r),height(0) {}
+
+	T key;
+	int height;
+	AVLTreeNode<T> *left;
+	AVLTreeNode<T> *right;
 };
 
-template<class KeyType>
-class AvlNode{
+template<typename T>
+class AVLTree {
 public:
+	AVLTree(){};
+	~AVLTree(){};
 
-	enum { MAX_SUBTREES = 2 };
-	static DIR_T Opposite(DIR_T dir){
-		return DIR_T(1 - (int)dir);
-	}
+	void PreOrder();
+	void InOrder();
+	void PostOrder();
 
-	AvlNode(Comparable<KeyType> *item = NULL);
+	void Dump();
+	void Destory();
 
-	virtual ~AvlNode();
+	void Insert(T key);
+	void Remove(T key);
 
-	Comparable<KeyType>*
-		Data()const { return data_; }
+	AVLTreeNode<T> *SearchByRecurse(T key);
+	AVLTreeNode<T> *SearchByIterator(T key);
 
-	KeyType
-		Key()const{ return data_->Key(); }
+	T Min();
+	T Max();
 
-	short
-		Balance()const{ return balance_; }
-
-	AvlNode*
-		SubTree(DIR_T dir)const{ return sub_[dir]; }
-public:
-	//查找
-	static Comparable<KeyType>*
-		Search(KeyType key, AvlNode<KeyType>*root, CMP_T cmp = EQ_CMP);
-
-	//插入
-	static Comparable<KeyType>*
-		Insert(AvlNode<KeyType>* item, AvlNode<KeyType> * &root);
-	//删除
-	static Comparable<KeyType>*
-		Delete(KeyType key, AvlNode<KeyType>* &root, CMP_T cmp = EQ_CMP);
-
-	static Comparable<KeyType>*
-		Min(AvlNode<KeyType>* &root);
-
-	static Comparable<KeyType>*
-		Max(AvlNode<KeyType>* &root);
-	//树高度
-	int
-		Height()const;
-
-	int 
-		Check()const;
+	int Height(AVLTreeNode<T> *pnode);
+	int Height();
 
 private:
-	void Reset(){
-		balance_ = 0;
-		sub_[LEFT] = sub_[RIGHT] = NULL;
-	}
+	AVLTreeNode<T> *root_;
 
-	static Comparable<KeyType>*
-		InsertInternal(AvlNode<KeyType>* item, AvlNode<KeyType> *&root, int &change);
+protected:
+	void PreOrder(AVLTreeNode<T> *pnode) const ;
+	void InOrder(AVLTreeNode<T> *pnode) const;
+	void PostOrder(AVLTreeNode<T> *pnode) const;
 
-	static Comparable<KeyType>*
-		DeleteInternal(KeyType key, AvlNode<KeyType>* &root, int &change, CMP_T cmp = EQ_CMP);
-	
-	//一次旋转
-	static int
-		RotateOnce(AvlNode<KeyType> *&root, DIR_T dir);
+	void Dump(AVLTreeNode<T>* pnode, T key, int direction) const;
+	void Destory(AVLTreeNode<T>* &pnode);
 
-	//两次旋转
-	static int
-		RotateTwice(AvlNode<KeyType> *&root, DIR_T dir);
+	AVLTreeNode<T>* Insert(AVLTreeNode<T>* &pnode, T key);
+	AVLTreeNode<T>* Remove(AVLTreeNode<T>* &pnode, T key);
 
-	CMP_T
-		Compare(KeyType key, CMP_T cmp = EQ_CMP)const;
-	
-	CMP_T
-		Compare(const KeyType &key, CMP_T cmp = EQ_CMP)const;
+	AVLTreeNode<T>* Min(AVLTreeNode<T> *pnode) const;
+	AVLTreeNode<T>* Max(AVLTreeNode<T> *pnode) const;
 
-	//重新调整平衡
-	int
-		Rebalance(AvlNode<KeyType> *&root);
-private:
-	AvlNode(const AvlNode<KeyType>&);
-	AvlNode & operator=(const AvlNode<KeyType>&);
-private:
-	Comparable<KeyType>* data_;
+	AVLTreeNode<T>* SearchByRecurse(AVLTreeNode<T> *pnode, T key) const;
+	AVLTreeNode<T>* SearchByIterator(AVLTreeNode<T> *pnode, T key) const;
 
-	short balance_;
-
-	AvlNode<KeyType> *sub_[MAX_SUBTREES];
+	AVLTreeNode<T>* LeftRotate(AVLTreeNode<T> *pnode);
+	AVLTreeNode<T>* RightRotate(AVLTreeNode<T> *pnode);
+	AVLTreeNode<T>* LeftRightRotate(AVLTreeNode<T> *pnode);
+	AVLTreeNode<T>* RightLeftRotate(AVLTreeNode<T> *pnode);
 };
 
-template<class KeyType>
-class AvlTree
+template<typename T>
+int AVLTree<T>::Height(AVLTreeNode<T> *pnode)
 {
-public:
-	AvlTree() :root_(NULL){}
-
-	~AvlTree(){ if (root_){ delete root_; root_ = NULL; } };
-
-	void
-		DumpTree(std::ostream & os)const;
-	
-	bool 
-		IsEmpty()const{
-			return (root_ == NULL);
-		}
-
-	Comparable<KeyType>*
-		Search(KeyType key, CMP_T cmp = EQ_CMP){
-			return AvlNode<KeyType>::Search(key, root_, cmp);
-		}
-
-	Comparable<KeyType>*
-		Insert(Comparable<KeyType> *item){
-			return AvlNode<KeyType>::Insert(item, root_);
-		}
-
-	Comparable<KeyType>*
-		Delete(KeyType key, CMP_T cmp = EQ_CMP){
-			return AvlNode<KeyType>::Delete(key, root_, cmp);
-		}
-	//AVL树的健康检查 无效节点检验
-	bool Check()const{
-		return (root_) ? root_->Check() : false;
+	if (pnode != nullptr) {
+		return pnode->height;
 	}
 
-	//最小节点
-	Comparable<KeyType>*
-		Min(){
-			return AvlNode<KeyType>::Min(root_);
-		}
-	//最大节点
-	Comparable<KeyType>*
-		Max(){
-			return AvlNode<KeyType>::Max(root_);
-		}
-private:
-	AvlTree(const AvlTree<KeyType>&);
-	AvlTree & operator=(const AvlTree<KeyType>&);
+	return 0;
+}
+template<typename T>
+int AVLTree<T>::Height()
+{
+	return Height(root_);
+}
 
-	AvlNode<KeyType> *root_;
-};
+template<typename T>
+AVLTreeNode<T>* 
+AVLTree<T>::LeftRotate(AVLTreeNode<T> *pnode)
+{
+	AVLTreeNode<T> *right = pnode->right;
+	pnode->right = right->left;
+	right->left = pnode;
+
+	pnode->height = MAX(Height(pnode->left), Height(pnode->right)) + 1;
+	right->height = MAX(Height(right->left), Height(right->right)) + 1;
+	return right;
+}
+
+template<typename T>
+AVLTreeNode<T>*
+AVLTree<T>::RightRotate(AVLTreeNode<T> *pnode)
+{
+	AVLTreeNode<T> *left = pnode->left;
+	pnode->left = left->right;
+	left->right = pnode;
+
+	pnode->height = MAX(Height(pnode->left), Height(pnode->right)) + 1;
+	left->height =  MAX(Height(left->left), Height(left->right)) + 1;
+	return left;
+}
+
+template<typename T>
+AVLTreeNode<T>*
+AVLTree<T>::LeftRightRotate(AVLTreeNode<T> *pnode)
+{
+	pnode->left = LeftRotate(pnode->left);
+
+	return RightRotate(pnode);
+}
+
+template<typename T>
+AVLTreeNode<T>*
+AVLTree<T>::RightLeftRotate(AVLTreeNode<T> *pnode)
+{
+	pnode->right = RightRotate(pnode->right);
+
+	return LeftRotate(pnode);
+}
+
+template<typename T>
+AVLTreeNode<T>*
+AVLTree<T>::Insert(AVLTreeNode<T>* &pnode, T key)
+{
+	if (pnode == nullptr) {
+		pnode = new AVLTreeNode<T>(key, nullptr, nullptr);
+	}
+	else if (key > pnode->key) {
+		pnode->right = Insert(pnode->right, key);
+		if ((Height(pnode->right) - Height(pnode->left)) == 2)
+		{
+			if (key > pnode->right->key)
+				pnode = LeftRotate(pnode);
+			else if (key < pnode->right->key)
+				pnode = RightLeftRotate(pnode);
+		}
+	}
+	else if (key < pnode->key) {
+		pnode->left = Insert(pnode->left, key);
+		if ((Height(pnode->left) - Height(pnode->right)) == 2)
+		{
+			if (key < pnode->left->key)
+				pnode = RightRotate(pnode);
+			else if (key > pnode->left->key)
+				pnode = LeftRightRotate(pnode);
+		}
+	}
+
+	pnode->height = MAX(Height(pnode->left), Height(pnode->right)) + 1;
+	return pnode;
+}
+
+template<typename T>
+void AVLTree<T>::Insert(T key)
+{
+	root_ = Insert(root_, key);
+}
+
+template<typename T>
+AVLTreeNode<T>*
+AVLTree<T>::Remove(AVLTreeNode<T>* &pnode, T key)
+{
+	if (pnode != nullptr) {
+
+		if (key == pnode->key) {
+			if (pnode->left != nullptr && pnode->right != nullptr)
+			{
+				if (Height(pnode->left) > Height(pnode->right))
+				{
+					AVLTreeNode<T>* ppre = Max(pnode->left);
+					pnode->key = ppre->key;
+					pnode->left = Remove(pnode->left, ppre->key);
+				}
+				else {
+					AVLTreeNode<T>* psuc = Min(pnode->right);
+					pnode->key = psuc->key;
+					pnode->right = Remove(pnode->right, psuc->key);
+				}
+			}
+			else {
+				AVLTreeNode<T> *ptemp = pnode;
+				if (pnode->left != nullptr)
+					pnode = pnode->left;
+				if (pnode->right != nullptr)
+					pnode = pnode->right;
+				delete ptemp;
+				return nullptr;
+			}
+		}
+		else if (key > pnode->key){
+			pnode->right = Remove(pnode->right, key);
+			if (Height(pnode->left) - Height(pnode->right) == 2){
+				if (Height(pnode->left->right) > Height(pnode->left->left))
+					pnode = LeftRightRotate(pnode);
+				else
+					pnode = RightRotate(pnode);
+			}
+		}
+		else if (key < pnode->key) {
+			pnode->left = Remove(pnode->left, key);
+			if (Height(pnode->right) - Height(pnode->left) == 2) {
+				if (Height(pnode->right->left) > Height(pnode->right->right))
+					pnode = RightLeftRotate(pnode);
+				else
+					pnode = LeftRotate(pnode);
+			}
+		}
+
+		return pnode;
+	}
+	return nullptr;
+}
+
+template<typename T>
+AVLTreeNode<T>* AVLTree<T>::SearchByRecurse(T key)
+{
+	return SearchByRecurse(root_, key);
+}
+
+template<typename T>
+AVLTreeNode<T>* AVLTree<T>::SearchByRecurse(AVLTreeNode<T> *pnode, T key) const
+{
+	if (pnode != nullptr) {
+		if (pnode->key == key) 
+			return pnode;
+		if (key > pnode->key)
+			return SearchByRecurse(pnode->right, key);
+		else
+			return SearchByRecurse(pnode->left, key);
+	}
+
+	return nullptr;
+}
+
+template<typename T>
+AVLTreeNode<T>*
+AVLTree<T>::SearchByIterator(T key)
+{
+	AVLTreeNode<T>* pnode = root_;
+	return SearchByIterator(pnode, key);
+}
+
+template<typename T>
+AVLTreeNode<T>* 
+AVLTree<T>::SearchByIterator(AVLTreeNode<T> *pnode, T key) const
+{
+	while (pnode)
+	{
+		if (pnode->key == key)
+			return pnode;
+		else if (key > pnode->key)
+			pnode = pnode->right;
+		else
+			pnode = pnode->left;
+	}
+
+	return nullptr;
+}
+
+template<typename T>
+void AVLTree<T>::PreOrder(AVLTreeNode<T> *pnode)const
+{
+	if (pnode != NULL)
+	{
+		std::cout << pnode->key <<" ";
+		InOrder(pnode->left);
+		InOrder(pnode->right);
+	}
+}
+
+template<typename T>
+void AVLTree<T>::PreOrder()
+{
+	return PreOrder(root_);
+}
+
+template<typename T>
+void AVLTree<T>::InOrder(AVLTreeNode<T> *pnode)const
+{
+	if (pnode != NULL)
+	{
+		InOrder(pnode->left);
+		std::cout << pnode->key << " ";
+		InOrder(pnode->right);
+	}
+}
+
+template<typename T>
+void AVLTree<T>::InOrder()
+{
+	return InOrder(root_);
+}
+
+template<typename T>
+void AVLTree<T>::PostOrder(AVLTreeNode<T> *pnode)const
+{
+	if (pnode != NULL)
+	{
+		InOrder(pnode->left);
+		InOrder(pnode->right);
+		std::cout << pnode->key << " ";
+	}
+}
+
+template<typename T>
+void AVLTree<T>::PostOrder()
+{
+	return PostOrder(root_);
+}
+
+template<typename T>
+void AVLTree<T>::Destory(AVLTreeNode<T>* &pnode)
+{
+	if (pnode != nullptr)
+	{
+		Destory(pnode->left);
+		Destory(pnode->right);
+		delete pnode;
+		pnode = nullptr;
+	}
+}
+
+template<typename T>
+void AVLTree<T>::Destory()
+{
+	Destory(root_);
+}
+
+template<typename T>
+AVLTreeNode<T>* 
+AVLTree<T>::Min(AVLTreeNode<T> *pnode) const
+{
+	if (pnode != nullptr)
+	{
+		while (pnode->left != nullptr)
+			pnode = pnode->left;
+
+		return pnode;
+	}
+	return nullptr;
+}
+
+template<typename T>
+T AVLTree<T>::Min()
+{
+	AVLTreeNode<T> *pnode = root_;
+
+	AVLTreeNode<T> *result = Min(pnode);
+	return result->key;
+}
+
+template<typename T>
+AVLTreeNode<T>*
+AVLTree<T>::Max(AVLTreeNode<T> *pnode)const
+{
+	if (pnode != nullptr)
+	{
+		while (pnode->right != nullptr)
+			pnode = pnode->right;
+
+		return pnode;
+	}
+
+	return nullptr;
+}
+
+template<typename T>
+T AVLTree<T>::Max()
+{
+	AVLTreeNode<T> *pnode = root_;
+	AVLTreeNode<T> *result = Max(pnode);
+	return result->key;
+}
 
 #endif

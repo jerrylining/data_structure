@@ -2,34 +2,41 @@
 //
 
 #include "stdafx.h"
+#include <iostream>
 #include "tree\AvlTree.h"
+#include "tree\RBTree.h"
 
-typedef struct{
-	size_t len;
-	char *data;
-}ngx_str_t;
+void AvlTreeTest(){
+	AVLTree<int> avl;
 
-char *
-ngx_hex_dump(char *dst, char *src, size_t len)
-{
-	static char  hex[] = "0123456789abcdef";
+	for (int i = 0; i < 3000; i++)
+		avl.Insert(i);
 
-	while (len--) {
-		*dst++ = hex[*src >> 4];
-		*dst++ = hex[*src++ & 0xf];
-	}
+	std::cout << "Height:" << avl.Height() << std::endl;
 
-	return dst;
+	std::cout << "InOrder" << std::endl;
+	avl.InOrder();
+	std::cout << std::endl;
+
+	std::cout << "PreOrder" << std::endl;
+	avl.PreOrder();
+	std::cout << std::endl;
+
+	std::cout << "PostOrder" << std::endl;
+	avl.PostOrder();
+	std::cout << std::endl;
+
+	std::cout << "Max:" << avl.Max() << std::endl;
+	std::cout << "Min:" << avl.Min() << std::endl;
+
+	AVLTreeNode<int> *node = avl.SearchByIterator(9);
+
+	if (node != nullptr)
+		std::cout << node->key << std::endl;
 }
-
 int _tmain(int argc, _TCHAR* argv[])
 {
-	ngx_str_t *str = new ngx_str_t;
-
-	str->len = 10;
-	str->data = "fasfda";
-
-	ngx_str_t *ptr = str;
+	AvlTreeTest();
 	return 0;
 }
 

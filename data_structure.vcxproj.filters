@@ -18,6 +18,9 @@
     <ClCompile Include="hash\SHash.cpp">
       <Filter>hash</Filter>
     </ClCompile>
+    <ClCompile Include="tree\SuffixTree.cpp">
+      <Filter>tree</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -40,6 +43,9 @@
     <ClInclude Include="hash\SHash.h">
       <Filter>hash\.h</Filter>
     </ClInclude>
+    <ClInclude Include="tree\SuffixTree.h">
+      <Filter>tree\.h</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -56,6 +62,9 @@
     </Filter>
     <Filter Include="hash\.h">
       <UniqueIdentifier>{72fe69f2-be0e-4c1c-8141-f04a626e4213}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="test">
+      <UniqueIdentifier>{9fa86802-1090-415a-9708-f13e06d15518}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

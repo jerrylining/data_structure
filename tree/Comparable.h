@@ -24,7 +24,7 @@ public:
 		return (key == Key_) ? EQ_CMP : ((key < Key_) ? MIN_CMP : MAX_CMP);
 	}
 
-	KeyType& Key()const{ return Key_; }
+	KeyType Key()const{ return Key_; }
 
 #ifdef USE_DEBUG
 	std::ostream & Print(std::ostream & os)const{
