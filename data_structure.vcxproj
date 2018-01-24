@@ -85,6 +85,7 @@
     <ClInclude Include="tree\AvlTree.h" />
     <ClInclude Include="tree\B+Tree.h" />
     <ClInclude Include="tree\BinaryTree.h" />
+    <ClInclude Include="tree\BSTree.h" />
     <ClInclude Include="tree\BTree.h" />
     <ClInclude Include="tree\RBTree.h" />
     <ClInclude Include="tree\SuffixTree.h" />
@@ -104,6 +105,7 @@
     <ClCompile Include="tree\B+Tree.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">../stdafx.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="tree\BSTree.cpp" />
     <ClCompile Include="tree\BTree.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">../stdafx.h</PrecompiledHeaderFile>
     </ClCompile>
